@@ -1,21 +1,26 @@
 package ImageObject;
 
+import java.awt.Image;
+
 /**
  *
  * @author Niall
  */
-public class ImageObj {
+public class ImageObj 
+{
     private String mFileName;
     private String mPath;
     private int xPos;
     private int yPos;
-
-    public ImageObj(String mFileName, String mPath, int xPos, int yPos)
+    private Image img;
+    
+    public ImageObj(String mFileName, String mPath, int xPos, int yPos, Image img)
     {
         this.mFileName = mFileName;
         this.mPath = mPath;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.img = img;
     }
 
     public String getmFileName()
@@ -57,7 +62,14 @@ public class ImageObj {
     {
         this.yPos = yPos;
     }
-    
-    
 
+    public Image getImg()
+    {
+        return img;
+    }
+
+    public void setImg(Image img)
+    {
+        this.img = img;
+    }
 }
