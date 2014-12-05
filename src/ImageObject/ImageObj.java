@@ -1,6 +1,7 @@
 package ImageObject;
 
 import java.awt.Image;
+import java.io.File;
 
 /**
  *
@@ -13,14 +14,16 @@ public class ImageObj
     private int xPos;
     private int yPos;
     private Image img;
+    private File file;
     
-    public ImageObj(String mFileName, String mPath, int xPos, int yPos, Image img)
+    public ImageObj()
     {
         this.mFileName = mFileName;
         this.mPath = mPath;
         this.xPos = xPos;
         this.yPos = yPos;
         this.img = img;
+        this.file = new File("");
     }
 
     public String getmFileName()

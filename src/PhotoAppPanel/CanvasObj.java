@@ -9,9 +9,10 @@ package PhotoAppPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Iterator;
+import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -22,6 +23,8 @@ import javax.swing.JPanel;
 public class CanvasObj extends JPanel
 {
     private BufferedImage image = null;
+    private Vector<File> vector;
+   
 
     public CanvasObj()
     {
@@ -29,19 +32,16 @@ public class CanvasObj extends JPanel
         this.setSize(new Dimension(300,200));
         this.setBackground(Color.WHITE);
         this.setVisible(true);
+        this.vector = new Vector<File>();
     }
 
-    public void setImage(File imageFile)
+    public void setImages(Vector<File> vectorImages)
     {
-        if (imageFile != null)
+        if (vectorImages != null)
         {
-            try
-            {
-                image = ImageIO.read(imageFile);
-            }
-            catch (Exception e)
-            {
-            }
+            
+            vector = vectorImages;
+            
         }
         else // imageFile == null
         {
@@ -58,23 +58,23 @@ public class CanvasObj extends JPanel
     @Override
     public void paintComponent(Graphics g)
     {
-        //super.paintComponent(g);
-        if (this.image != null)
+        
+        try
         {
-            final Graphics2D g2d = this.image.createGraphics();
+            Iterator iterator = vector.iterator();
 
-            // perform a simple manipulatation of the inputted image
-           // g2d.setColor(Color.red);
-           // g2d.fillOval(this.image.getWidth() / 4, this.image.getHeight() / 4,
-                       //  this.image.getWidth() / 2, this.image.getHeight() / 2);
+            while(iterator.hasNext())
+            {
+                File file = (File)iterator.next();
+                image = ImageIO.read(file);
 
-            // paint the modified image
-            g.drawImage(this.image, 0, 0,this.getWidth(),this.getHeight(), this);
+                 g.drawImage(this.image, 0, 0,this.getWidth(),this.getHeight(), this);
+            }
 
         }
-        else // no image displayed yet
+        catch (Exception e)
         {
-
+            
         }
     }
 }

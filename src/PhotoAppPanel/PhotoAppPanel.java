@@ -6,19 +6,20 @@
 
 package PhotoAppPanel;
 
-import ImageObject.ImageObj;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -28,7 +29,7 @@ import javax.swing.JPanel;
  *
  * @author Anthony
  */
-public class PhotoAppPanel extends JPanel implements ActionListener
+public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
 {
     private JMenuBar menuBar = new JMenuBar();
     private ImageIcon addImageIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Add_icon.png"));
@@ -38,8 +39,11 @@ public class PhotoAppPanel extends JPanel implements ActionListener
     private JMenuItem fileSave = new JMenuItem("Save", saveImageIcon);
     private JFileChooser mFileChooser = new JFileChooser();
     private CanvasObj mCanvas = new CanvasObj();
-    private Vector<ImageObj> imgVector = new Vector<ImageObj>();
+    private Vector<File> imgVector = new Vector<File>();
     private JPanel mButtonPanel = new JPanel(), mImagePanel = new JPanel();
+    private String names[] = {"Anthony","Fernandes"};
+    private JList mList = new JList();
+    
 
     public PhotoAppPanel()
     {
@@ -47,8 +51,13 @@ public class PhotoAppPanel extends JPanel implements ActionListener
 
         this.setBackground(Color.BLUE);
 
+        mList = new JList(imgVector);
+        mList.setVisibleRowCount(10);
+        
         fileAdd.addActionListener(this);
         fileSave.addActionListener(this);
+        mList.addKeyListener(this);
+        
         fileAdd.setToolTipText("Add a new image to the collage");
         fileSave.setToolTipText("Save a file to your drive");
 
@@ -64,6 +73,7 @@ public class PhotoAppPanel extends JPanel implements ActionListener
         this.setLayout(new BorderLayout());
         this.add("Center", mCanvas);
         this.add(menuBar, BorderLayout.NORTH);
+        this.add(mList, BorderLayout.EAST);
     }
 
     private GridBagConstraints getConstraints(int gridx, int gridy,
@@ -96,6 +106,7 @@ public class PhotoAppPanel extends JPanel implements ActionListener
             saveFile();
         }
 
+        //here we will repaint the entire vector
         mCanvas.repaint();
     }
 
@@ -107,8 +118,12 @@ public class PhotoAppPanel extends JPanel implements ActionListener
                     + mFileChooser.getSelectedFile().getName());
             try
             {
-
-                mCanvas.setImage(imageFile);
+                //Here we will add a new vector set
+                imgVector.add(imageFile);
+                mCanvas.setImages(imgVector);
+                
+                mList.setListData(imgVector);
+                
             } catch (Exception e)
             {
 
@@ -124,6 +139,7 @@ public class PhotoAppPanel extends JPanel implements ActionListener
 
             File imageFile = new File(mFileChooser.getCurrentDirectory() + "\\" +
                                       mFileChooser.getSelectedFile().getName());
+            
             try
             {
                 String fileType = mFileChooser.getSelectedFile().getName();
@@ -146,4 +162,28 @@ public class PhotoAppPanel extends JPanel implements ActionListener
             }
         }
     }
+
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        // If user presses Delete key,
+        if(ke.getKeyCode()==KeyEvent.VK_DELETE)
+        {
+
+            // Remove the selected item
+            imgVector.remove(mList.getSelectedValue());
+
+            // Now set the updated vector (updated items)
+            mList.setListData(imgVector);
+
+            mCanvas.repaint();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {}
+    
+    @Override
+    public void keyTyped(KeyEvent ke) {}
 }
+
