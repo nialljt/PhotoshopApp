@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Vector;
 import javax.imageio.ImageIO;
@@ -38,8 +39,11 @@ public class PhotoAppPanel extends JPanel implements ActionListener
     private JMenuItem fileSave = new JMenuItem("Save", saveImageIcon);
     private JFileChooser mFileChooser = new JFileChooser();
     private CanvasObj mCanvas = new CanvasObj();
-    private Vector<ImageObj> imgVector = new Vector<ImageObj>();
+    public static Vector<ImageObj> imgVector = new Vector<ImageObj>();
     private JPanel mButtonPanel = new JPanel(), mImagePanel = new JPanel();
+    
+    int testX=0;
+    int testY=0;
 
     public PhotoAppPanel()
     {
@@ -61,6 +65,8 @@ public class PhotoAppPanel extends JPanel implements ActionListener
         file.add(fileSave);
         menuBar.add(file);
 
+      
+        
         this.setLayout(new BorderLayout());
         this.add("Center", mCanvas);
         this.add(menuBar, BorderLayout.NORTH);
@@ -107,8 +113,11 @@ public class PhotoAppPanel extends JPanel implements ActionListener
                     + mFileChooser.getSelectedFile().getName());
             try
             {
-
-                mCanvas.setImage(imageFile);
+                imgVector.add(new ImageObj(imageFile.getName(), (BufferedImage)ImageIO.read(imageFile),testX,testY));
+                testX = mCanvas.getWidth()/2;
+                mCanvas.repaint();
+                //mCanvas.setImage(imageFile);   
+                
             } catch (Exception e)
             {
 
@@ -136,7 +145,7 @@ public class PhotoAppPanel extends JPanel implements ActionListener
                     fileType = "jpg";
                 }
 
-                ImageIO.write(mCanvas.getImage(), fileType, imageFile);
+                //ImageIO.write(mCanvas.getImage(), fileType, imageFile);
 
                 
             }

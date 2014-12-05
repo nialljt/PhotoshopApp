@@ -1,6 +1,7 @@
 package ImageObject;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -9,18 +10,18 @@ import java.awt.Image;
 public class ImageObj 
 {
     private String mFileName;
-    private String mPath;
     private int xPos;
     private int yPos;
-    private Image img;
+    private BufferedImage img;
+    private boolean shouldDraw;
     
-    public ImageObj(String mFileName, String mPath, int xPos, int yPos, Image img)
+    public ImageObj(String mFileName,BufferedImage img, int xPos, int yPos)
     {
         this.mFileName = mFileName;
-        this.mPath = mPath;
         this.xPos = xPos;
         this.yPos = yPos;
         this.img = img;
+        shouldDraw = true;
     }
 
     public String getmFileName()
@@ -31,16 +32,6 @@ public class ImageObj
     public void setmFileName(String mFileName)
     {
         this.mFileName = mFileName;
-    }
-
-    public String getmPath()
-    {
-        return mPath;
-    }
-
-    public void setmPath(String mPath)
-    {
-        this.mPath = mPath;
     }
 
     public int getxPos()
@@ -68,8 +59,20 @@ public class ImageObj
         return img;
     }
 
-    public void setImg(Image img)
+    public void setImg(BufferedImage img)
     {
         this.img = img;
     }
+
+    public boolean isShouldDraw()
+    {
+        return shouldDraw;
+    }
+
+    public void setShouldDraw(boolean shouldDraw)
+    {
+        this.shouldDraw = shouldDraw;
+    }
+    
+    
 }
