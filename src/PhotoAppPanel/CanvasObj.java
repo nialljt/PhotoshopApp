@@ -69,7 +69,7 @@ public class CanvasObj extends JPanel
                        //  this.image.getWidth() / 2, this.image.getHeight() / 2);
 
             // paint the modified image
-            g.drawImage(this.image, 0, 0,this.getWidth(),this.getHeight(), this);
+            g.drawImage(this.image, 0, 0,this.getWidth()/2,this.getHeight()/2, this);
 
         }
         else // no image displayed yet
