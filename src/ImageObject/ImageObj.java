@@ -15,17 +15,45 @@ public class ImageObj
     private int yPos;
     private BufferedImage img;
     private boolean shouldDraw;
+    private int rotate;
+    private int height;
+    private int width;
     
-    public ImageObj(String mFileName,BufferedImage img, int xPos, int yPos)
-
+    public ImageObj(String mFileName,BufferedImage img, int xPos, int yPos, 
+            int height, int width, int rotate)
     {
         this.mFileName = mFileName;
         this.xPos = xPos;
         this.yPos = yPos;
         this.img = img;
-
-
+        this.rotate = rotate;
+        this.height = height;
+        this.width = width;
         shouldDraw = true;
+    }
+
+    public int getRotate() {
+        return rotate;
+    }
+
+    public void setRotate(int rotate) {
+        this.rotate = rotate;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     public String getmFileName()

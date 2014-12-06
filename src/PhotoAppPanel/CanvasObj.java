@@ -10,6 +10,7 @@ import ImageObject.ImageObj;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Iterator;
@@ -50,14 +51,16 @@ public class CanvasObj extends JPanel
     {
         try
         {
-            
-            g.clearRect(0, 0, this.getWidth(), this.getHeight());
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.clearRect(0, 0, this.getWidth(), this.getHeight());
             Iterator<ImageObj> iterator = vector.iterator();
 
             while(iterator.hasNext())
             {
                 ImageObj imgVector = iterator.next();
-                g.drawImage(imgVector.getImg(), imgVector.getxPos(), imgVector.getyPos(), this.getWidth()/2, this.getHeight()/2, this);
+                g2d.rotate(Math.toRadians(imgVector.getRotate()),imgVector.getxPos(), imgVector.getyPos()); 
+                g2d.drawImage(imgVector.getImg(), imgVector.getxPos(), imgVector.getyPos(), imgVector.getWidth(), imgVector.getHeight(), this);
+                g2d.rotate(Math.toRadians(-imgVector.getRotate()),imgVector.getxPos(), imgVector.getyPos()); 
             }
 
         }

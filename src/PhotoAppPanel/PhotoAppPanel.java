@@ -130,7 +130,7 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
                     + mFileChooser.getSelectedFile().getName());
             try
             {
-                imgVector.add(new ImageObj(imageFile.getName(), (BufferedImage)ImageIO.read(imageFile),testX,testY));
+                imgVector.add(new ImageObj(imageFile.getName(), (BufferedImage)ImageIO.read(imageFile),testX,testY,mCanvas.getWidth(), mCanvas.getHeight(),0));
                 mCanvas.setImages(imgVector);
                 mList.setListData(imgVector); 
                 
@@ -187,7 +187,10 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
     @Override
     public void keyPressed(KeyEvent ke) {
         // If user presses Delete key,
-        if(ke.getKeyCode()==KeyEvent.VK_DELETE)
+        
+        int keyCode = ke.getKeyCode();
+        
+        if(keyCode==KeyEvent.VK_DELETE)
         {
             // Remove the selected item
             imgVector.remove(mList.getSelectedValue());
@@ -195,8 +198,36 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
             // Now set the updated vector (updated items)
             mList.setListData(imgVector);
 
-            mCanvas.repaint();
+            
         }
+        
+        if(keyCode==KeyEvent.VK_RIGHT)
+        {
+            ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
+            selectedObject.setRotate(selectedObject.getRotate() + 1);
+        }
+        
+        if(keyCode==KeyEvent.VK_LEFT)
+        {
+            ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
+            selectedObject.setRotate(selectedObject.getRotate() - 1);
+        }
+        
+        if(keyCode==KeyEvent.VK_ADD)
+        {
+            ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
+            selectedObject.setHeight(selectedObject.getHeight() + 1);
+            selectedObject.setWidth(selectedObject.getWidth() + 1);
+        }
+        
+        if(keyCode==KeyEvent.VK_SUBTRACT)
+        {
+            ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
+            selectedObject.setHeight(selectedObject.getHeight() - 1);
+            selectedObject.setWidth(selectedObject.getWidth() - 1);
+        }
+        
+        mCanvas.repaint();
     }
 
     @Override
