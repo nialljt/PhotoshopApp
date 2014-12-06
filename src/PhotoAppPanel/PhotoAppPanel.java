@@ -123,9 +123,6 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
                     + mFileChooser.getSelectedFile().getName());
             try
             {
-                
-    
-                
                 imgVector.add(new ImageObj(imageFile.getName(), (BufferedImage)ImageIO.read(imageFile),testX,testY));
                 mCanvas.setImages(imgVector);
                 mList.setListData(imgVector); 
