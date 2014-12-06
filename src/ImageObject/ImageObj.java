@@ -1,7 +1,11 @@
 package ImageObject;
 
 import java.awt.Image;
+<<<<<<< HEAD
 import java.io.File;
+=======
+import java.awt.image.BufferedImage;
+>>>>>>> origin/master
 
 /**
  *
@@ -10,20 +14,29 @@ import java.io.File;
 public class ImageObj 
 {
     private String mFileName;
-    private String mPath;
     private int xPos;
     private int yPos;
+<<<<<<< HEAD
     private Image img;
     private File file;
     
     public ImageObj()
+=======
+    private BufferedImage img;
+    private boolean shouldDraw;
+    
+    public ImageObj(String mFileName,BufferedImage img, int xPos, int yPos)
+>>>>>>> origin/master
     {
         this.mFileName = mFileName;
-        this.mPath = mPath;
         this.xPos = xPos;
         this.yPos = yPos;
         this.img = img;
+<<<<<<< HEAD
         this.file = new File("");
+=======
+        shouldDraw = true;
+>>>>>>> origin/master
     }
 
     public String getmFileName()
@@ -34,16 +47,6 @@ public class ImageObj
     public void setmFileName(String mFileName)
     {
         this.mFileName = mFileName;
-    }
-
-    public String getmPath()
-    {
-        return mPath;
-    }
-
-    public void setmPath(String mPath)
-    {
-        this.mPath = mPath;
     }
 
     public int getxPos()
@@ -71,8 +74,20 @@ public class ImageObj
         return img;
     }
 
-    public void setImg(Image img)
+    public void setImg(BufferedImage img)
     {
         this.img = img;
     }
+
+    public boolean isShouldDraw()
+    {
+        return shouldDraw;
+    }
+
+    public void setShouldDraw(boolean shouldDraw)
+    {
+        this.shouldDraw = shouldDraw;
+    }
+    
+    
 }
