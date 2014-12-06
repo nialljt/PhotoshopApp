@@ -25,6 +25,7 @@ public class PhotoApp extends JApplet
         PhotoAppPanel photoAppPanel = new PhotoAppPanel();
         this.add(photoAppPanel);
         this.setVisible(true);
+        this.setSize(800, 800);
 
     }
 }

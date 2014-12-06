@@ -1,11 +1,8 @@
 package ImageObject;
 
 import java.awt.Image;
-<<<<<<< HEAD
 import java.io.File;
-=======
 import java.awt.image.BufferedImage;
->>>>>>> origin/master
 
 /**
  *
@@ -16,27 +13,20 @@ public class ImageObj
     private String mFileName;
     private int xPos;
     private int yPos;
-<<<<<<< HEAD
-    private Image img;
-    private File file;
-    
-    public ImageObj()
-=======
+
     private BufferedImage img;
     private boolean shouldDraw;
     
     public ImageObj(String mFileName,BufferedImage img, int xPos, int yPos)
->>>>>>> origin/master
+
     {
         this.mFileName = mFileName;
         this.xPos = xPos;
         this.yPos = yPos;
         this.img = img;
-<<<<<<< HEAD
-        this.file = new File("");
-=======
+
+
         shouldDraw = true;
->>>>>>> origin/master
     }
 
     public String getmFileName()

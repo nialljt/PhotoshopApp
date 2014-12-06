@@ -6,18 +6,16 @@
 
 package PhotoAppPanel;
 
+import ImageObject.ImageObj;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-<<<<<<< HEAD
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-=======
 import java.awt.image.BufferedImage;
->>>>>>> origin/master
 import java.io.File;
 import java.util.Vector;
 import javax.imageio.ImageIO;
@@ -43,19 +41,13 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
     private JMenuItem fileSave = new JMenuItem("Save", saveImageIcon);
     private JFileChooser mFileChooser = new JFileChooser();
     private CanvasObj mCanvas = new CanvasObj();
-<<<<<<< HEAD
-    private Vector<File> imgVector = new Vector<File>();
+    public static Vector<ImageObj> imgVector = new Vector<ImageObj>();
     private JPanel mButtonPanel = new JPanel(), mImagePanel = new JPanel();
     private String names[] = {"Anthony","Fernandes"};
     private JList mList = new JList();
-    
-=======
-    public static Vector<ImageObj> imgVector = new Vector<ImageObj>();
-    private JPanel mButtonPanel = new JPanel(), mImagePanel = new JPanel();
-    
-    int testX=0;
-    int testY=0;
->>>>>>> origin/master
+
+    int testX= 0;
+    int testY= 0;
 
     public PhotoAppPanel()
     {
@@ -82,12 +74,13 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         file.add(fileSave);
         menuBar.add(file);
 
-      
-        
         this.setLayout(new BorderLayout());
         this.add("Center", mCanvas);
         this.add(menuBar, BorderLayout.NORTH);
         this.add(mList, BorderLayout.EAST);
+        
+        testX= mCanvas.getX()/2;
+        testY=mCanvas.getY()/2;
     }
 
     private GridBagConstraints getConstraints(int gridx, int gridy,
@@ -119,8 +112,6 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         {
             saveFile();
         }
-
-        //here we will repaint the entire vector
         mCanvas.repaint();
     }
 
@@ -132,18 +123,15 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
                     + mFileChooser.getSelectedFile().getName());
             try
             {
-<<<<<<< HEAD
-                //Here we will add a new vector set
-                imgVector.add(imageFile);
-                mCanvas.setImages(imgVector);
                 
-                mList.setListData(imgVector);
-=======
+    
+                
                 imgVector.add(new ImageObj(imageFile.getName(), (BufferedImage)ImageIO.read(imageFile),testX,testY));
-                testX = mCanvas.getWidth()/2;
-                mCanvas.repaint();
-                //mCanvas.setImage(imageFile);   
->>>>>>> origin/master
+                mCanvas.setImages(imgVector);
+                mList.setListData(imgVector); 
+                
+                testX = testX + 50;
+                testY = testY + 50;
                 
             } catch (Exception e)
             {
@@ -157,10 +145,6 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         // Save the same image file
         if (mFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
         {
-
-            File imageFile = new File(mFileChooser.getCurrentDirectory() + "\\" +
-                                      mFileChooser.getSelectedFile().getName());
-            
             try
             {
                 String fileType = mFileChooser.getSelectedFile().getName();
@@ -172,10 +156,6 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
                 {
                     fileType = "jpg";
                 }
-
-                //ImageIO.write(mCanvas.getImage(), fileType, imageFile);
-
-                
             }
             catch (Exception e)
             {
@@ -190,7 +170,6 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         // If user presses Delete key,
         if(ke.getKeyCode()==KeyEvent.VK_DELETE)
         {
-
             // Remove the selected item
             imgVector.remove(mList.getSelectedValue());
 
