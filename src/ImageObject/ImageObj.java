@@ -1,8 +1,8 @@
 package ImageObject;
 
 import java.awt.Image;
-import java.io.File;
 import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -13,7 +13,6 @@ public class ImageObj
     private String mFileName;
     private int xPos;
     private int yPos;
-
     private BufferedImage img;
     private boolean shouldDraw;
     
@@ -68,6 +67,14 @@ public class ImageObj
     {
         this.img = img;
     }
+    
+    public ImageIcon getIcon()
+    {
+       Image resizedImage = img.getScaledInstance(30, 30, 0);
+       ImageIcon icon = new ImageIcon(resizedImage); 
+       
+       return icon;
+    }
 
     public boolean isShouldDraw()
     {
@@ -78,6 +85,4 @@ public class ImageObj
     {
         this.shouldDraw = shouldDraw;
     }
-    
-    
 }

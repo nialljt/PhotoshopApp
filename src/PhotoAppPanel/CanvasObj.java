@@ -50,6 +50,8 @@ public class CanvasObj extends JPanel
     {
         try
         {
+            
+            g.clearRect(0, 0, this.getWidth(), this.getHeight());
             Iterator<ImageObj> iterator = vector.iterator();
 
             while(iterator.hasNext())

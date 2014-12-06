@@ -6,9 +6,11 @@
 
 package PhotoAppPanel;
 
+import ImageObject.ImageCellRenderer;
 import ImageObject.ImageObj;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -26,6 +28,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -41,10 +44,9 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
     private JMenuItem fileSave = new JMenuItem("Save", saveImageIcon);
     private JFileChooser mFileChooser = new JFileChooser();
     private CanvasObj mCanvas = new CanvasObj();
-    public static Vector<ImageObj> imgVector = new Vector<ImageObj>();
-    private JPanel mButtonPanel = new JPanel(), mImagePanel = new JPanel();
-    private String names[] = {"Anthony","Fernandes"};
+    private Vector<ImageObj> imgVector = new Vector<ImageObj>();
     private JList mList = new JList();
+    private JScrollPane layersScrollPane = new JScrollPane(mList);
 
     int testX= 0;
     int testY= 0;
@@ -56,7 +58,10 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         this.setBackground(Color.BLUE);
 
         mList = new JList(imgVector);
+        
+        mList.setCellRenderer(new ImageCellRenderer());
         mList.setVisibleRowCount(10);
+        
         
         fileAdd.addActionListener(this);
         fileSave.addActionListener(this);
@@ -68,6 +73,7 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         this.mFileChooser.setAcceptAllFileFilterUsed(false);
         this.mFileChooser.addChoosableFileFilter(new JpegFileFilter());
         this.mFileChooser.addChoosableFileFilter(new GifFileFilter());
+        this.mFileChooser.addChoosableFileFilter(new PingFileFilter());
         this.mFileChooser.setCurrentDirectory(new java.io.File(""));
 
         file.add(fileAdd);
@@ -112,6 +118,7 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         {
             saveFile();
         }
+        
         mCanvas.repaint();
     }
 
@@ -139,9 +146,17 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
     
     private void saveFile()
     {
-        // Save the same image file
+        
+        BufferedImage saveImage = new BufferedImage(mCanvas.getWidth(), mCanvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2=(Graphics2D)saveImage.getGraphics();
+        
+        mCanvas.paint(g2);
+     
         if (mFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
         {
+            File imageFile = new File(this.mFileChooser.getCurrentDirectory() + "\\" +
+                                          this.mFileChooser.getSelectedFile().getName());
+            
             try
             {
                 String fileType = mFileChooser.getSelectedFile().getName();
@@ -149,10 +164,17 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
                 {
                     fileType = "gif";
                 }
-                else
+                else if(fileType.contains(".jpg"))
                 {
                     fileType = "jpg";
                 }
+                else
+                {
+                    fileType = "png";
+                }
+                
+                ImageIO.write(saveImage, fileType, imageFile);
+                
             }
             catch (Exception e)
             {
