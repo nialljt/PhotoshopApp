@@ -58,9 +58,9 @@ public class CanvasObj extends JPanel
             while(iterator.hasNext())
             {
                 ImageObj imgVector = iterator.next();
-                g2d.rotate(Math.toRadians(imgVector.getRotate()),imgVector.getxPos(), imgVector.getyPos()); 
+                g2d.rotate(Math.toRadians(imgVector.getRotate()),(imgVector.getxPos() + (imgVector.getWidth()/2)), (imgVector.getyPos() + (imgVector.getHeight()/2))); 
                 g2d.drawImage(imgVector.getImg(), imgVector.getxPos(), imgVector.getyPos(), imgVector.getWidth(), imgVector.getHeight(), this);
-                g2d.rotate(Math.toRadians(-imgVector.getRotate()),imgVector.getxPos(), imgVector.getyPos()); 
+                g2d.rotate(Math.toRadians(-imgVector.getRotate()),(imgVector.getxPos()+ (imgVector.getWidth()/2)),(imgVector.getyPos() + (imgVector.getHeight()/2))); 
             }
 
         }
