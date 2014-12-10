@@ -10,8 +10,11 @@ import ImageObject.ImageCellRenderer;
 import ImageObject.ImageObj;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,26 +22,36 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author Anthony
  */
-public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
+public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener, ListSelectionListener
 {
     private JMenuBar menuBar = new JMenuBar();
     private ImageIcon addImageIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Add_icon.png"));
     private ImageIcon saveImageIcon = new ImageIcon(getClass().getClassLoader().getResource("images/Add_icon.png"));
+    private ImageIcon blackAndWhiteButtonIcon = new ImageIcon(getClass().getClassLoader().getResource("images/alert-32.png"));
+    private ImageIcon textButtonIcon = new ImageIcon(getClass().getClassLoader().getResource("images/alert-32.png"));
     private JMenu file = new JMenu("File");
     private JMenuItem fileAdd = new JMenuItem("Add", addImageIcon);
     private JMenuItem fileSave = new JMenuItem("Save", saveImageIcon);
@@ -47,6 +60,11 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
     private Vector<ImageObj> imgVector = new Vector<ImageObj>();
     private JList mList = new JList();
     private JScrollPane layersScrollPane = new JScrollPane(mList);
+    private JLabel mLayersLabel = new JLabel("Layers");
+    private JPanel toolsPanel = new JPanel();
+    private JPanel effectsPanel = new JPanel();
+    private JButton blackAndWhiteButton = new JButton();
+    
 
     int testX= 0;
     int testY= 0;
@@ -57,7 +75,6 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
 
         this.setBackground(Color.BLUE);
 
-        mList = new JList(imgVector);
         
         mList.setCellRenderer(new ImageCellRenderer());
         mList.setVisibleRowCount(10);
@@ -66,6 +83,7 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         fileAdd.addActionListener(this);
         fileSave.addActionListener(this);
         mList.addKeyListener(this);
+        mList.addListSelectionListener(this);
         
         fileAdd.setToolTipText("Add a new image to the collage");
         fileSave.setToolTipText("Save a file to your drive");
@@ -80,10 +98,34 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         file.add(fileSave);
         menuBar.add(file);
 
+        
+        mList.setVisibleRowCount(10);
+        mList.setFixedCellHeight(25);
+        mList.setFixedCellWidth(200);
+        
+       
+        
+        layersScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED), "Layers"));
+        effectsPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        mCanvas.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        
+        effectsPanel.setLayout(new GridLayout(4,2));
+        
+                    
+        blackAndWhiteButton.setIcon(blackAndWhiteButtonIcon);
+       blackAndWhiteButton.setEnabled(false);
+        effectsPanel.add(blackAndWhiteButton);
+        
+        toolsPanel.setLayout(new BorderLayout());
+        toolsPanel.add(layersScrollPane,"North");
+        toolsPanel.add(effectsPanel,"Center");
+                
+        mCanvas.addMouseMotionListener(mCanvas);
+        
         this.setLayout(new BorderLayout());
         this.add("Center", mCanvas);
         this.add(menuBar, BorderLayout.NORTH);
-        this.add(mList, BorderLayout.EAST);
+        this.add(toolsPanel, BorderLayout.EAST);
         
         testX= mCanvas.getX()/2;
         testY=mCanvas.getY()/2;
@@ -133,7 +175,9 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
                 imgVector.add(new ImageObj(imageFile.getName(), (BufferedImage)ImageIO.read(imageFile),testX,testY,mCanvas.getWidth(), mCanvas.getHeight(),0));
                 mCanvas.setImages(imgVector);
                 mList.setListData(imgVector); 
-                
+                if(imgVector.size() == 1){
+                    mList.setSelectedIndex(0);
+                }
                 testX = testX + 50;
                 testY = testY + 50;
                 
@@ -188,6 +232,8 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
     public void keyPressed(KeyEvent ke) {
         // If user presses Delete key,
         
+        ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
+        
         int keyCode = ke.getKeyCode();
         
         if(keyCode==KeyEvent.VK_DELETE)
@@ -203,26 +249,22 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
         
         if(keyCode==KeyEvent.VK_RIGHT)
         {
-            ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
             selectedObject.setRotate(selectedObject.getRotate() + 1);
         }
         
         if(keyCode==KeyEvent.VK_LEFT)
         {
-            ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
             selectedObject.setRotate(selectedObject.getRotate() - 1);
         }
         
         if(keyCode==KeyEvent.VK_ADD)
-        {
-            ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
+        {           
             selectedObject.setHeight(selectedObject.getHeight() + 1);
             selectedObject.setWidth(selectedObject.getWidth() + 1);
         }
         
         if(keyCode==KeyEvent.VK_SUBTRACT)
-        {
-            ImageObj selectedObject = imgVector.get(mList.getSelectedIndex());
+        {        
             selectedObject.setHeight(selectedObject.getHeight() - 1);
             selectedObject.setWidth(selectedObject.getWidth() - 1);
         }
@@ -235,5 +277,16 @@ public class PhotoAppPanel extends JPanel implements ActionListener, KeyListener
     
     @Override
     public void keyTyped(KeyEvent ke) {}
+
+    @Override
+    public void valueChanged(ListSelectionEvent lse)
+    {
+        imgVector.get(mList.getSelectedIndex()).setIsSelected(true);
+        for(int i = 0; i < imgVector.size(); i++){
+            if(i != mList.getSelectedIndex()){
+                imgVector.get(i).setIsSelected(false);
+            }
+        }
+    }
 }
 
