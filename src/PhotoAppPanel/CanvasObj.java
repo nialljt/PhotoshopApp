@@ -78,14 +78,14 @@ public class CanvasObj extends JPanel implements MouseMotionListener
         for(ImageObj img : vector){
             if(img.isIsSelected()){
                if(previousx < me.getX()){
-                    img.setxPos(img.getxPos()+3);
+                    img.setxPos(img.getxPos()+1);
                 }else{
-                    img.setxPos(img.getxPos()-3);
+                    img.setxPos(img.getxPos()-1);
                 }
                 if(previousy < me.getY()){
-                    img.setyPos(img.getyPos()+3);
+                    img.setyPos(img.getyPos()+1);
                 }else{
-                    img.setyPos(img.getyPos()-3);
+                    img.setyPos(img.getyPos()-1);
                 }
             }
         }
